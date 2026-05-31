@@ -21,6 +21,10 @@ public class LoginServlet extends HttpServlet {
             HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	response.setHeader(
+    		    "Access-Control-Allow-Origin",
+    		    "*");
 
         String username =
                 request.getParameter("username");
