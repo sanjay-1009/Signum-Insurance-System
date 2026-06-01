@@ -23,6 +23,10 @@ public class ReportServlet extends HttpServlet {
             HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	response.setHeader(
+    	        "Access-Control-Allow-Origin",
+    	        "http://localhost:3000");
 
         response.setContentType("text/html");
 

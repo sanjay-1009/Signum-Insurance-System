@@ -1,71 +1,49 @@
-import { useState } from "react";
-import API from "./services/api";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Policy from "./pages/Policy";
+import Claim from "./pages/Claim";
+import Approval from "./pages/Approval";
+import Reports from "./pages/Reports";
 
 function App() {
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const login = async () => {
-
-    try {
-
-      const formData = new URLSearchParams();
-
-      formData.append("username", username);
-      formData.append("password", password);
-
-      const response =
-        await API.post(
-          "/login",
-          formData
-        );
-
-      alert(response.data);
-
-    } catch(error) {
-
-      alert("Login Error");
-      console.log(error);
-    }
-  };
-
   return (
+    <BrowserRouter>
 
-    <div style={{
-      textAlign:"center",
-      marginTop:"100px"
-    }}>
+      <Routes>
 
-      <h1>
-        Insurance Claim Processing System
-      </h1>
+        <Route
+          path="/"
+          element={<Login />}
+        />
 
-      <h2>Login Page</h2>
+        <Route
+          path="/dashboard"
+          element={<Dashboard />}
+        />
+        <Route
+          path="/policy"
+          element={<Policy />}
+/>
+<Route
+    path="/claim"
+    element={<Claim />}
+/>
+        <Route
+    path="/approval"
+    element={<Approval />}
+/>
 
-      <input
-        type="text"
-        placeholder="Username"
-        onChange={(e)=>
-          setUsername(e.target.value)}
-      />
+<Route
+    path="/reports"
+    element={<Reports />}
+/>
 
-      <br /><br />
+      </Routes>
 
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e)=>
-          setPassword(e.target.value)}
-      />
-
-      <br /><br />
-
-      <button onClick={login}>
-        Login
-      </button>
-
-    </div>
+    </BrowserRouter>
   );
 }
 

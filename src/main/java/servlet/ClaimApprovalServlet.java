@@ -24,6 +24,18 @@ public class ClaimApprovalServlet
             HttpServletResponse response)
             throws ServletException,
             IOException {
+    	
+    	response.setHeader(
+    		    "Access-Control-Allow-Origin",
+    		    "http://localhost:3000");
+
+    		response.setHeader(
+    		    "Access-Control-Allow-Methods",
+    		    "POST, GET, OPTIONS");
+
+    		response.setHeader(
+    		    "Access-Control-Allow-Headers",
+    		    "*");
 
         int claimId =
                 Integer.parseInt(
@@ -56,5 +68,27 @@ public class ClaimApprovalServlet
             out.print(
                     "Update Failed");
         }
+    }
+    @Override
+    protected void doOptions(
+            HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException,
+            IOException {
+
+        response.setHeader(
+            "Access-Control-Allow-Origin",
+            "http://localhost:3000");
+
+        response.setHeader(
+            "Access-Control-Allow-Methods",
+            "POST, GET, OPTIONS");
+
+        response.setHeader(
+            "Access-Control-Allow-Headers",
+            "*");
+
+        response.setStatus(
+            HttpServletResponse.SC_OK);
     }
 }

@@ -25,29 +25,62 @@ public class DashboardServlet extends HttpServlet {
             throws ServletException,
             IOException {
 
+        response.setHeader(
+                "Access-Control-Allow-Origin",
+                "http://localhost:3000");
+
         HashMap<String,Integer> stats =
                 controller.getDashboardData();
 
-        response.setContentType("text/html");
+        response.setContentType(
+                "application/json");
 
         PrintWriter out =
                 response.getWriter();
 
-        out.println("<h1>Insurance Dashboard</h1>");
-        out.println("<h3>Total Policies : "
+        out.print("{");
+
+        out.print("\"totalPolicies\":"
                 + stats.get("totalPolicies")
-                + "</h3>");
-        out.println("<h3>Total Claims : "
+                + ",");
+
+        out.print("\"totalClaims\":"
                 + stats.get("totalClaims")
-                + "</h3>");
-        out.println("<h3>Approved Claims : "
+                + ",");
+
+        out.print("\"approvedClaims\":"
                 + stats.get("approvedClaims")
-                + "</h3>");
-        out.println("<h3>Rejected Claims : "
+                + ",");
+
+        out.print("\"rejectedClaims\":"
                 + stats.get("rejectedClaims")
-                + "</h3>");
-        out.println("<h3>Pending Claims : "
-                + stats.get("pendingClaims")
-                + "</h3>");
+                + ",");
+
+        out.print("\"pendingClaims\":"
+                + stats.get("pendingClaims"));
+
+        out.print("}");
+    }
+    @Override
+    protected void doOptions(
+            HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException,
+            IOException {
+
+        response.setHeader(
+                "Access-Control-Allow-Origin",
+                "http://localhost:3000");
+
+        response.setHeader(
+                "Access-Control-Allow-Methods",
+                "GET, POST, OPTIONS");
+
+        response.setHeader(
+                "Access-Control-Allow-Headers",
+                "*");
+
+        response.setStatus(
+                HttpServletResponse.SC_OK);
     }
 }
