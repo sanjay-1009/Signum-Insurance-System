@@ -13,94 +13,137 @@ import java.sql.ResultSet;
 @WebServlet("/reports")
 public class ReportServlet extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
 
-    ReportController controller =
-            new ReportController();
+private static final long serialVersionUID = 1L;
 
-    @Override
-    protected void doGet(
-            HttpServletRequest request,
-            HttpServletResponse response)
-            throws ServletException, IOException {
-    	
-    	response.setHeader(
-    	        "Access-Control-Allow-Origin",
-    	        "http://localhost:3000");
+ReportController controller =
+        new ReportController();
 
-        response.setContentType("text/html");
+@Override
+protected void doGet(
+        HttpServletRequest request,
+        HttpServletResponse response)
+        throws ServletException,
+        IOException {
 
-        PrintWriter out =
-                response.getWriter();
+    response.setHeader(
+            "Access-Control-Allow-Origin",
+            "http://localhost:3000");
 
-        try {
+    response.setContentType(
+            "application/json");
 
-            ResultSet rs =
-                    controller.getClaimsReport();
+    PrintWriter out =
+            response.getWriter();
 
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Claim Reports</title>");
-            out.println("</head>");
-            out.println("<body>");
+    try {
 
-            out.println("<h2>Insurance Claim Report</h2>");
+        ResultSet rs =
+                controller.getClaimsReport();
 
-            out.println("<table border='1' cellpadding='10'>");
+        StringBuilder json =
+                new StringBuilder();
 
-            out.println(
-                    "<tr>"
-                    + "<th>Claim ID</th>"
-                    + "<th>Policy ID</th>"
-                    + "<th>Claimant</th>"
-                    + "<th>Amount</th>"
-                    + "<th>Incident Date</th>"
-                    + "<th>Description</th>"
-                    + "<th>Status</th>"
-                    + "</tr>");
+        json.append("[");
 
-            while(rs.next()) {
+        boolean first = true;
 
-                out.println("<tr>");
+        while(rs.next()) {
 
-                out.println("<td>"
-                        + rs.getInt("claim_id")
-                        + "</td>");
+            if(!first) {
 
-                out.println("<td>"
-                        + rs.getInt("policy_id")
-                        + "</td>");
-
-                out.println("<td>"
-                        + rs.getString("claimant_name")
-                        + "</td>");
-
-                out.println("<td>"
-                        + rs.getDouble("claim_amount")
-                        + "</td>");
-
-                out.println("<td>"
-                        + rs.getDate("incident_date")
-                        + "</td>");
-
-                out.println("<td>"
-                        + rs.getString("description")
-                        + "</td>");
-
-                out.println("<td>"
-                        + rs.getString("status")
-                        + "</td>");
-
-                out.println("</tr>");
+                json.append(",");
             }
 
-            out.println("</table>");
-            out.println("</body>");
-            out.println("</html>");
+            json.append("{");
 
-        } catch(Exception e) {
+            json.append(
+                    "\"claimId\":")
+                    .append(
+                            rs.getInt(
+                                    "claim_id"))
+                    .append(",");
 
-            e.printStackTrace();
+            json.append(
+                    "\"policyId\":")
+                    .append(
+                            rs.getInt(
+                                    "policy_id"))
+                    .append(",");
+
+            json.append(
+                    "\"claimantName\":\"")
+                    .append(
+                            rs.getString(
+                                    "claimant_name"))
+                    .append("\",");
+
+            json.append(
+                    "\"claimAmount\":")
+                    .append(
+                            rs.getDouble(
+                                    "claim_amount"))
+                    .append(",");
+
+            json.append(
+                    "\"incidentDate\":\"")
+                    .append(
+                            rs.getDate(
+                                    "incident_date"))
+                    .append("\",");
+
+            json.append(
+                    "\"description\":\"")
+                    .append(
+                            rs.getString(
+                                    "description"))
+                    .append("\",");
+
+            json.append(
+                    "\"status\":\"")
+                    .append(
+                            rs.getString(
+                                    "status"))
+                    .append("\"");
+
+            json.append("}");
+
+            first = false;
         }
+
+        json.append("]");
+
+        out.print(
+                json.toString());
+
+    } catch(Exception e) {
+
+        e.printStackTrace();
     }
+}
+
+@Override
+protected void doOptions(
+        HttpServletRequest request,
+        HttpServletResponse response)
+        throws ServletException,
+        IOException {
+
+    response.setHeader(
+            "Access-Control-Allow-Origin",
+            "http://localhost:3000");
+
+    response.setHeader(
+            "Access-Control-Allow-Methods",
+            "GET,POST,OPTIONS");
+
+    response.setHeader(
+            "Access-Control-Allow-Headers",
+            "Content-Type");
+
+    response.setStatus(
+            HttpServletResponse.SC_OK);
+}
+
+
 }

@@ -3,75 +3,274 @@ import API from "../services/api";
 
 function Approval() {
 
-    const [claimId, setClaimId] = useState("");
-    const [status, setStatus] = useState("Approved");
 
-    const updateStatus = async () => {
+const [claimId, setClaimId] = useState("");
+const [status, setStatus] = useState("");
 
-        try {
+const [claim, setClaim] =
+    useState(null);
 
-            const formData = new URLSearchParams();
+const loadClaim = async () => {
 
-            formData.append("claimId", claimId);
-            formData.append("status", status);
+    if (Number(claimId) <= 0) {
 
-            const response = await API.post(
+        alert("Enter Valid Claim ID");
+        return;
+    }
+
+    try {
+
+        const response =
+            await API.get(
+                "/getClaim?claimId=" +
+                claimId
+            );
+
+        if (
+            response.data.message ===
+            "Claim Not Found"
+        ) {
+
+            alert("Claim Not Found");
+            setClaim(null);
+
+        } else {
+
+            setClaim(
+                response.data
+            );
+        }
+
+    } catch(error) {
+
+        console.log(error);
+
+        alert(
+            "Failed to Load Claim"
+        );
+    }
+};
+
+const updateStatus = async () => {
+
+    if (!claim) {
+
+        alert(
+            "Load a claim first"
+        );
+
+        return;
+    }
+
+    if (status === "") {
+
+        alert(
+            "Select Status"
+        );
+
+        return;
+    }
+
+    try {
+
+        const formData =
+            new URLSearchParams();
+
+        formData.append(
+            "claimId",
+            claimId);
+
+        formData.append(
+            "status",
+            status);
+
+        const response =
+            await API.post(
                 "/approveClaim",
                 formData
             );
 
-            alert(response.data);
+        alert(response.data);
 
-        } catch(error) {
+        if (
+            response.data.includes(
+                "Updated"
+            )
+        ) {
 
-            console.log(error);
-            alert("Failed to Update Claim");
+            setClaimId("");
+            setStatus("");
+            setClaim(null);
         }
-    };
 
-    return (
+    } catch(error) {
 
-        <div
-            style={{
-                textAlign: "center",
-                marginTop: "50px"
-            }}
-        >
+        console.log(error);
 
-            <h1>Claim Approval</h1>
+        alert(
+            "Failed to Update Claim"
+        );
+    }
+};
 
-            <input
-                type="number"
-                placeholder="Claim ID"
-                onChange={(e)=>
-                    setClaimId(e.target.value)}
-            />
+return (
 
-            <br /><br />
+    <div className="container mt-5">
 
-            <select
-                onChange={(e)=>
-                    setStatus(e.target.value)}
-            >
+        <div className="row justify-content-center">
 
-                <option value="Approved">
-                    Approved
-                </option>
+            <div className="col-md-8">
 
-                <option value="Rejected">
-                    Rejected
-                </option>
+                <div className="card shadow">
 
-            </select>
+                    <div className="card-header bg-warning">
 
-            <br /><br />
+                        <h3>
+                            Claim Approval
+                        </h3>
 
-            <button onClick={updateStatus}>
-                Update Status
-            </button>
+                    </div>
+
+                    <div className="card-body">
+
+                        <label className="form-label">
+                            Claim ID
+                        </label>
+
+                        <div className="d-flex gap-2 mb-3">
+
+                            <input
+                                className="form-control"
+                                type="number"
+                                min="1"
+                                value={claimId}
+                                onChange={(e) =>
+                                    setClaimId(
+                                        e.target.value
+                                    )
+                                }
+                            />
+
+                            <button
+                                className="btn btn-primary"
+                                onClick={
+                                    loadClaim
+                                }
+                            >
+                                Load Claim
+                            </button>
+
+                        </div>
+
+                        {claim && (
+
+                            <div className="card mb-3 border-info">
+
+                                <div className="card-header bg-info text-white">
+
+                                    Claim Details
+
+                                </div>
+
+                                <div className="card-body">
+
+                                    <p>
+                                        <strong>
+                                            Policy ID:
+                                        </strong>{" "}
+                                        {claim.policyId}
+                                    </p>
+
+                                    <p>
+                                        <strong>
+                                            Claimant:
+                                        </strong>{" "}
+                                        {claim.claimantName}
+                                    </p>
+
+                                    <p>
+                                        <strong>
+                                            Claim Amount:
+                                        </strong>{" "}
+                                        ₹{claim.claimAmount}
+                                    </p>
+
+                                    <p>
+                                        <strong>
+                                            Incident Date:
+                                        </strong>{" "}
+                                        {claim.incidentDate}
+                                    </p>
+
+                                    <p>
+                                        <strong>
+                                            Description:
+                                        </strong>{" "}
+                                        {claim.description}
+                                    </p>
+
+                                    <p>
+                                        <strong>
+                                            Current Status:
+                                        </strong>{" "}
+                                        {claim.status}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        )}
+
+                        <label className="form-label">
+                            Update Status
+                        </label>
+
+                        <select
+                            className="form-select mb-3"
+                            value={status}
+                            onChange={(e) =>
+                                setStatus(
+                                    e.target.value
+                                )
+                            }
+                        >
+
+                            <option value="">
+                                Select Status
+                            </option>
+
+                            <option value="Approved">
+                                Approved
+                            </option>
+
+                            <option value="Rejected">
+                                Rejected
+                            </option>
+
+                        </select>
+
+                        <button
+                            className="btn btn-warning w-100"
+                            onClick={
+                                updateStatus
+                            }
+                        >
+                            Update Claim Status
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
-    );
+
+    </div>
+);
+
+
 }
 
 export default Approval;

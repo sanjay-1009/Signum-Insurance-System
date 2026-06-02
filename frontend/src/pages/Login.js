@@ -26,13 +26,18 @@ function Login() {
             console.log("Server Response:", response.data);
 
             if (
-                response.data === "SUCCESS" ||
-                response.data.includes("SUCCESS")
-            ) {
+    response.data === "SUCCESS" ||
+    response.data.includes("SUCCESS")
+) {
 
-                navigate("/dashboard");
+    localStorage.setItem(
+        "loggedIn",
+        "true"
+    );
 
-            } else {
+    navigate("/dashboard");
+
+} else {
 
                 alert("Invalid Username or Password");
             }
@@ -44,51 +49,50 @@ function Login() {
         }
     };
 
-    return (
+   return (
 
-        <div
-            style={{
-                textAlign: "center",
-                marginTop: "100px"
-            }}
+<div className="container mt-5">
+  <div className="row justify-content-center">
+
+    <div className="col-md-4">
+
+      <div className="card p-4 shadow">
+
+        <h2 className="text-center mb-4">
+          Login
+        </h2>
+
+        <input
+          className="form-control mb-3"
+          type="text"
+          placeholder="Username"
+          onChange={(e) =>
+            setUsername(e.target.value)}
+        />
+
+        <input
+          className="form-control mb-3"
+          type="password"
+          placeholder="Password"
+          onChange={(e) =>
+            setPassword(e.target.value)}
+        />
+
+        <button
+          className="btn btn-primary w-100"
+          onClick={login}
         >
+          Login
+        </button>
 
-            <h1>
-                Insurance Claim Processing System
-            </h1>
+      </div>
 
-            <h2>
-                Login Page
-            </h2>
+    </div>
 
-            <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) =>
-                    setUsername(e.target.value)
-                }
-            />
+  </div>
+</div>
 
-            <br /><br />
-
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) =>
-                    setPassword(e.target.value)
-                }
-            />
-
-            <br /><br />
-
-            <button onClick={login}>
-                Login
-            </button>
-
-        </div>
-    );
+);
 }
 
 export default Login;

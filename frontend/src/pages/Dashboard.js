@@ -36,81 +36,77 @@ function Dashboard() {
     };
 
     return (
+  <div className="container mt-5">
 
-        <div style={{
-            textAlign:"center",
-            marginTop:"30px"
-        }}>
+    <h1 className="text-center mb-4">
+      Insurance Claim Processing System
+    </h1>
 
-            <h1>
-                Insurance Claim Processing System
-            </h1>
+    <div className="row">
 
-            <h2>Dashboard Statistics</h2>
-
-            <h3>
-                Total Policies :
-                {stats.totalPolicies}
-            </h3>
-
-            <h3>
-                Total Claims :
-                {stats.totalClaims}
-            </h3>
-
-            <h3>
-                Approved Claims :
-                {stats.approvedClaims}
-            </h3>
-
-            <h3>
-                Rejected Claims :
-                {stats.rejectedClaims}
-            </h3>
-
-            <h3>
-                Pending Claims :
-                {stats.pendingClaims}
-            </h3>
-
-            <br/>
-
-            <button
-                onClick={() =>
-                    navigate("/policy")
-                }>
-                Add Policy
-            </button>
-
-            <br/><br/>
-
-            <button
-                onClick={() =>
-                    navigate("/claim")
-                }>
-                Submit Claim
-            </button>
-
-            <br/><br/>
-
-            <button
-                onClick={() =>
-                    navigate("/approval")
-                }>
-                Approve Claims
-            </button>
-            <br/><br/>
-
-            <button
-    onClick={() =>
-        navigate("/reports")
-    }
->
-    Reports
-</button>
-
+      <div className="col-md-4 mb-3">
+        <div className="card text-center">
+          <div className="card-body">
+            <h5>Total Policies</h5>
+            <h2>{stats.totalPolicies}</h2>
+          </div>
         </div>
-    );
+      </div>
+
+      <div className="col-md-4 mb-3">
+        <div className="card text-center">
+          <div className="card-body">
+            <h5>Total Claims</h5>
+            <h2>{stats.totalClaims}</h2>
+          </div>
+        </div>
+      </div>
+
+      <div className="col-md-4 mb-3">
+        <div className="card text-center">
+          <div className="card-body">
+            <h5>Approved Claims</h5>
+            <h2>{stats.approvedClaims}</h2>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div className="text-center mt-4">
+
+      <button
+        className="btn btn-primary me-2"
+        onClick={() => navigate("/policy")}
+      >
+        Add Policy
+      </button>
+
+      <button
+        className="btn btn-success me-2"
+        onClick={() => navigate("/claim")}
+      >
+        Submit Claim
+      </button>
+
+      <button
+        className="btn btn-warning me-2"
+        onClick={() => navigate("/approval")}
+      >
+        Approve Claims
+      </button>
+
+      <button
+        className="btn btn-info"
+        onClick={() => navigate("/reports")}
+      >
+        Reports
+      </button>
+
+    </div>
+
+  </div>
+);
 }
 
 export default Dashboard;
