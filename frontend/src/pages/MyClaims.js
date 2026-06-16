@@ -16,20 +16,20 @@ function MyClaims() {
 
         try {
 
-            const username =
-                localStorage.getItem(
-                    "username"
-                );
+            const userId =
+    localStorage.getItem(
+        "userId"
+    );
 
-            const response =
-                await API.get(
-                    "/myClaims",
-                    {
-                        params: {
-                            username
-                        }
-                    }
-                );
+const response =
+    await API.get(
+        "/myClaims",
+        {
+            params: {
+                userId
+            }
+        }
+    );
 
             setClaims(
                 response.data

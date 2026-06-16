@@ -29,6 +29,10 @@ function Login() {
     response.data.status ===
     "SUCCESS"
 ) {
+  localStorage.setItem(
+    "userId",
+    response.data.userId
+);
 
     localStorage.setItem(
         "loggedIn",

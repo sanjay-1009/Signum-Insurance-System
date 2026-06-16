@@ -52,6 +52,11 @@ const submitClaim = async () => {
             policyId);
 
         formData.append(
+    "userId",
+    localStorage.getItem("userId")
+);
+
+        formData.append(
             "claimantName",
             claimantName);
 
