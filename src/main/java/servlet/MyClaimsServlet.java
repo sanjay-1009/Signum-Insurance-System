@@ -28,9 +28,10 @@ public class MyClaimsServlet
                 "Access-Control-Allow-Origin",
                 "*");
 
-        String username =
-                request.getParameter(
-                        "username");
+        int userId =
+                Integer.parseInt(
+                        request.getParameter(
+                                "userId"));
 
         ArrayList<HashMap<String,Object>>
                 claims =
@@ -41,7 +42,7 @@ public class MyClaimsServlet
             ResultSet rs =
                     controller
                     .getClaimsByUser(
-                            username);
+                            userId);
 
             while(rs.next()) {
 

@@ -45,10 +45,15 @@ public class LoginServlet extends HttpServlet {
 
         if(role != null) {
 
+            int userId =
+                    controller.getUserId(
+                            username);
+
             out.print(
                 "{"
                 + "\"status\":\"SUCCESS\","
-                + "\"role\":\"" + role + "\""
+                + "\"role\":\"" + role + "\","
+                + "\"userId\":" + userId
                 + "}"
             );
 

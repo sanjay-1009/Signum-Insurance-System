@@ -31,7 +31,7 @@ public class ReportDAO {
         return null;
     }
     public ResultSet getClaimsByUser(
-            String username) {
+            int userId) {
 
         try {
 
@@ -39,16 +39,12 @@ public class ReportDAO {
                     DBConnection.getConnection();
 
             String query =
-                    "SELECT * FROM claims "
-                    + "WHERE LOWER(claimant_name)=LOWER(?)";
+                    "SELECT * FROM claims WHERE user_id=?";
 
             PreparedStatement ps =
-                    con.prepareStatement(
-                            query);
+                    con.prepareStatement(query);
 
-            ps.setString(
-                    1,
-                    username);
+            ps.setInt(1, userId);
 
             return ps.executeQuery();
 

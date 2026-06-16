@@ -4,6 +4,7 @@ public class Claim {
 
     private int claimId;
     private int policyId;
+    private int userId;
     private String claimantName;
     private double claimAmount;
     private String incidentDate;
@@ -36,6 +37,14 @@ public class Claim {
 
     public int getPolicyId() {
         return policyId;
+    }
+    
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public void setPolicyId(int policyId) {

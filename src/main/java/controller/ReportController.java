@@ -14,9 +14,9 @@ public class ReportController {
         return dao.getAllClaims();
     }
     public ResultSet getClaimsByUser(
-            String username) {
+            int userId) {
 
         return dao.getClaimsByUser(
-                username);
+                userId);
     }
 }

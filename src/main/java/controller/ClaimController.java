@@ -9,6 +9,7 @@ public class ClaimController {
 
     public boolean submitClaim(
             int policyId,
+            int userId,
             String claimantName,
             double claimAmount,
             String incidentDate,
@@ -22,6 +23,8 @@ public class ClaimController {
                         incidentDate,
                         description
                 );
+        
+        claim.setUserId(userId);
 
         return dao.addClaim(claim);
     }

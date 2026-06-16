@@ -51,4 +51,37 @@ public class UserDAO {
 
         return role;
     }
+    public int getUserId(
+            String username) {
+
+        try {
+
+            Connection con =
+                    DBConnection.getConnection();
+
+            String query =
+                    "SELECT id FROM users WHERE username=?";
+
+            PreparedStatement ps =
+                    con.prepareStatement(query);
+
+            ps.setString(
+                    1,
+                    username);
+
+            ResultSet rs =
+                    ps.executeQuery();
+
+            if(rs.next()) {
+
+                return rs.getInt("id");
+            }
+
+        } catch(Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
 }

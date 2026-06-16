@@ -41,6 +41,10 @@ public class ClaimServlet extends HttpServlet {
         int policyId =
                 Integer.parseInt(
                         request.getParameter("policyId"));
+        
+        int userId =
+                Integer.parseInt(
+                        request.getParameter("userId"));
 
         String claimantName =
                 request.getParameter("claimantName");
@@ -58,6 +62,7 @@ public class ClaimServlet extends HttpServlet {
         boolean status =
                 controller.submitClaim(
                         policyId,
+                        userId,
                         claimantName,
                         claimAmount,
                         incidentDate,

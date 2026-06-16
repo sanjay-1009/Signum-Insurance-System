@@ -18,16 +18,17 @@ public class ClaimDAO {
                     DBConnection.getConnection();
 
             String query =
-                    "INSERT INTO claims(policy_id, claimant_name, claim_amount, incident_date, description) VALUES(?,?,?,?,?)";
+            		"INSERT INTO claims(policy_id, user_id, claimant_name, claim_amount, incident_date, description) VALUES(?,?,?,?,?,?)";
 
             PreparedStatement ps =
                     con.prepareStatement(query);
 
             ps.setInt(1, claim.getPolicyId());
-            ps.setString(2, claim.getClaimantName());
-            ps.setDouble(3, claim.getClaimAmount());
-            ps.setString(4, claim.getIncidentDate());
-            ps.setString(5, claim.getDescription());
+            ps.setInt(2, claim.getUserId());
+            ps.setString(3, claim.getClaimantName());
+            ps.setDouble(4, claim.getClaimAmount());
+            ps.setString(5, claim.getIncidentDate());
+            ps.setString(6, claim.getDescription());
 
             int rows = ps.executeUpdate();
 

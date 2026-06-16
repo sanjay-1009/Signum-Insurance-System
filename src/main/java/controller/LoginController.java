@@ -20,4 +20,11 @@ public class LoginController {
         return dao.validateUser(
                 user);
     }
+
+    public int getUserId(
+            String username) {
+
+        return dao.getUserId(
+                username);
+    }
 }
