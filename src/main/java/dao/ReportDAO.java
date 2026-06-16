@@ -30,4 +30,33 @@ public class ReportDAO {
 
         return null;
     }
+    public ResultSet getClaimsByUser(
+            String username) {
+
+        try {
+
+            Connection con =
+                    DBConnection.getConnection();
+
+            String query =
+                    "SELECT * FROM claims "
+                    + "WHERE LOWER(claimant_name)=LOWER(?)";
+
+            PreparedStatement ps =
+                    con.prepareStatement(
+                            query);
+
+            ps.setString(
+                    1,
+                    username);
+
+            return ps.executeQuery();
+
+        } catch(Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

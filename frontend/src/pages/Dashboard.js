@@ -4,6 +4,8 @@ import API from "../services/api";
 
 function Dashboard() {
 
+    const role =localStorage.getItem("role");
+
     const navigate = useNavigate();
 
     const [stats, setStats] = useState({
@@ -75,18 +77,13 @@ function Dashboard() {
 
     <div className="text-center mt-4">
 
+  {role === "ADMIN" && (
+    <>
       <button
         className="btn btn-primary me-2"
         onClick={() => navigate("/policy")}
       >
         Add Policy
-      </button>
-
-      <button
-        className="btn btn-success me-2"
-        onClick={() => navigate("/claim")}
-      >
-        Submit Claim
       </button>
 
       <button
@@ -102,8 +99,41 @@ function Dashboard() {
       >
         Reports
       </button>
+    </>
+  )}
 
-    </div>
+  {role === "USER" && (
+    <>
+     <button
+    className="btn btn-info me-2"
+    onClick={() =>
+        navigate("/policies")
+    }
+>
+    View Policies
+</button>
+
+<button
+    className="btn btn-success me-2"
+    onClick={() =>
+        navigate("/claim")
+    }
+>
+    Submit Claim
+</button>
+
+<button
+    className="btn btn-secondary"
+    onClick={() =>
+        navigate("/myclaims")
+    }
+>
+    Track My Claims
+</button>
+    </>
+  )}
+
+</div>
 
   </div>
 );

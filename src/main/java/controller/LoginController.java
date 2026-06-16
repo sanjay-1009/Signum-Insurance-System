@@ -5,12 +5,19 @@ import model.User;
 
 public class LoginController {
 
-    UserDAO dao = new UserDAO();
+    UserDAO dao =
+            new UserDAO();
 
-    public boolean login(String username, String password) {
+    public String login(
+            String username,
+            String password) {
 
-        User user = new User(username, password);
+        User user =
+                new User(
+                        username,
+                        password);
 
-        return dao.validateUser(user);
+        return dao.validateUser(
+                user);
     }
 }

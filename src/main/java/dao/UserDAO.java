@@ -9,34 +9,46 @@ import java.sql.ResultSet;
 
 public class UserDAO {
 
-    public boolean validateUser(User user) {
+    public String validateUser(User user) {
 
-        boolean status = false;
+        String role = null;
 
         try {
 
-            Connection con = DBConnection.getConnection();
+            Connection con =
+                    DBConnection.getConnection();
 
             String query =
-                    "SELECT * FROM users WHERE username=? AND password=?";
+                    "SELECT role FROM users "
+                    + "WHERE username=? "
+                    + "AND password=?";
 
             PreparedStatement ps =
                     con.prepareStatement(query);
 
-            ps.setString(1, user.getUsername());
-            ps.setString(2, user.getPassword());
+            ps.setString(
+                    1,
+                    user.getUsername());
 
-            ResultSet rs = ps.executeQuery();
+            ps.setString(
+                    2,
+                    user.getPassword());
 
-            if (rs.next()) {
+            ResultSet rs =
+                    ps.executeQuery();
 
-                status = true;
+            if(rs.next()) {
+
+                role =
+                        rs.getString(
+                                "role");
             }
 
-        } catch (Exception e) {
+        } catch(Exception e) {
+
             e.printStackTrace();
         }
 
-        return status;
+        return role;
     }
 }

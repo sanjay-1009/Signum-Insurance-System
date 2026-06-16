@@ -32,20 +32,31 @@ public class LoginServlet extends HttpServlet {
         String password =
                 request.getParameter("password");
 
-        boolean status =
-                controller.login(username, password);
+        String role =
+        	    controller.login(
+        	        username,
+        	        password);
 
-        response.setContentType("text/plain");
+        response.setContentType(
+                "application/json");
 
-        PrintWriter out = response.getWriter();
+        PrintWriter out =
+                response.getWriter();
 
-        if (status) {
+        if(role != null) {
 
-            out.print("SUCCESS");
+            out.print(
+                "{"
+                + "\"status\":\"SUCCESS\","
+                + "\"role\":\"" + role + "\""
+                + "}"
+            );
 
         } else {
 
-            out.print("FAILED");
-        }
-    }
-}
+            out.print(
+                "{"
+                + "\"status\":\"FAILED\""
+                + "}"
+            );
+        }}}

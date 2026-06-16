@@ -25,9 +25,9 @@ function Login() {
 
             console.log("Server Response:", response.data);
 
-            if (
-    response.data === "SUCCESS" ||
-    response.data.includes("SUCCESS")
+           if (
+    response.data.status ===
+    "SUCCESS"
 ) {
 
     localStorage.setItem(
@@ -35,12 +35,24 @@ function Login() {
         "true"
     );
 
+    localStorage.setItem(
+        "role",
+        response.data.role
+    );
+
+    localStorage.setItem(
+        "username",
+        username
+    );
+
     navigate("/dashboard");
 
 } else {
 
-                alert("Invalid Username or Password");
-            }
+    alert(
+        "Invalid Username or Password"
+    );
+}
 
         } catch (error) {
 

@@ -3,6 +3,8 @@ package controller;
 import dao.PolicyDAO;
 import model.Policy;
 
+import java.sql.ResultSet;
+
 public class PolicyController {
 
     PolicyDAO dao = new PolicyDAO();
@@ -21,5 +23,10 @@ public class PolicyController {
         );
 
         return dao.addPolicy(policy);
+    }
+
+    public ResultSet getAllPolicies() {
+
+        return dao.getAllPolicies();
     }
 }

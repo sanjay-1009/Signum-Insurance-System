@@ -5,6 +5,7 @@ import model.Policy;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class PolicyDAO {
 
@@ -30,14 +31,38 @@ public class PolicyDAO {
 
             int rows = ps.executeUpdate();
 
-            if (rows > 0) {
+            if(rows > 0) {
                 status = true;
             }
 
-        } catch (Exception e) {
+        } catch(Exception e) {
+
             e.printStackTrace();
         }
 
         return status;
+    }
+
+    public ResultSet getAllPolicies() {
+
+        try {
+
+            Connection con =
+                    DBConnection.getConnection();
+
+            String query =
+                    "SELECT * FROM policies";
+
+            PreparedStatement ps =
+                    con.prepareStatement(query);
+
+            return ps.executeQuery();
+
+        } catch(Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

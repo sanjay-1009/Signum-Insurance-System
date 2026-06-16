@@ -12,6 +12,8 @@ import Claim from "./pages/Claim";
 import Approval from "./pages/Approval";
 import Reports from "./pages/Reports";
 import Navbar from "./components/Navbar";
+import Policies from "./pages/Policies";
+import MyClaims from "./pages/MyClaims";
 
 function AppContent() {
 
@@ -58,6 +60,16 @@ function AppContent() {
           path="/reports"
           element={<Reports />}
         />
+
+        <Route
+    path="/policies"
+    element={<Policies />}
+/>
+
+<Route
+    path="/myclaims"
+    element={<MyClaims />}
+/>
 
       </Routes>
     </>

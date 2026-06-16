@@ -13,4 +13,10 @@ public class ReportController {
 
         return dao.getAllClaims();
     }
+    public ResultSet getClaimsByUser(
+            String username) {
+
+        return dao.getClaimsByUser(
+                username);
+    }
 }
