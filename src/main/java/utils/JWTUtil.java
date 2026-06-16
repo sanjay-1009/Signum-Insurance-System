@@ -8,13 +8,10 @@ import java.util.Date;
 
 public class JWTUtil {
 
-    private static final String SECRET =
-        "InsuranceClaimSystemSecretKey123456789";
-
-    private static final Key key =
-        Keys.hmacShaKeyFor(
-            SECRET.getBytes()
-        );
+    private static final Key SECRET_KEY =
+            Keys.hmacShaKeyFor(
+            "InsuranceClaimSystemJWTSecretKey2026"
+            .getBytes());
 
     public static String generateToken(
             String username,
@@ -22,26 +19,39 @@ public class JWTUtil {
 
         return Jwts.builder()
 
-            .setSubject(username)
+                .setSubject(username)
 
-            .claim("role", role)
+                .claim(
+                        "role",
+                        role)
 
-            .setIssuedAt(
-                new Date()
-            )
+                .setIssuedAt(
+                        new Date())
 
-            .setExpiration(
-                new Date(
-                    System.currentTimeMillis()
-                    + 86400000
-                )
-            )
+                .setExpiration(
+                        new Date(
+                        System.currentTimeMillis()
+                        + 86400000))
 
-            .signWith(
-                key,
-                SignatureAlgorithm.HS256
-            )
+                .signWith(
+                        SECRET_KEY)
 
-            .compact();
+                .compact();
+    }
+
+    public static Claims validateToken(
+            String token) {
+
+        return Jwts.parserBuilder()
+
+                .setSigningKey(
+                        SECRET_KEY)
+
+                .build()
+
+                .parseClaimsJws(
+                        token)
+
+                .getBody();
     }
 }

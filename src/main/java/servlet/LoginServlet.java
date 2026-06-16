@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+import utils.JWTUtil;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -45,17 +46,23 @@ public class LoginServlet extends HttpServlet {
 
         if(role != null) {
 
-            int userId =
-                    controller.getUserId(
-                            username);
+        	String token =
+        	        JWTUtil.generateToken(
+        	                username,
+        	                role);
 
-            out.print(
-                "{"
-                + "\"status\":\"SUCCESS\","
-                + "\"role\":\"" + role + "\","
-                + "\"userId\":" + userId
-                + "}"
-            );
+        	int userId =
+        	        controller.getUserId(
+        	                username);
+
+        	out.print(
+        	        "{"
+        	        + "\"status\":\"SUCCESS\","
+        	        + "\"role\":\"" + role + "\","
+        	        + "\"userId\":" + userId + ","
+        	        + "\"token\":\"" + token + "\""
+        	        + "}"
+        	);
 
         } else {
 
