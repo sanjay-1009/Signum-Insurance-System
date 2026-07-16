@@ -13,7 +13,7 @@ public class DBConnection {
 
     private static final String USER =
             System.getenv().getOrDefault(
-                    "DB_USERNAME",
+                    "DB_USER",
                     "root"
             );
 
