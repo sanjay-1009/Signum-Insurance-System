@@ -25,7 +25,7 @@ public class LoginServlet extends HttpServlet {
 
         response.setHeader(
                 "Access-Control-Allow-Origin",
-                "http://localhost:3000");
+                "https://insurance-frontend-woad.vercel.app");
 
         response.setHeader(
                 "Access-Control-Allow-Credentials",
