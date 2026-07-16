@@ -32,7 +32,7 @@ public class JWTFilter implements Filter {
         
         res.setHeader(
                 "Access-Control-Allow-Origin",
-                "http://localhost:3000");
+                "https://insurance-frontend-woad.vercel.app");
 
         res.setHeader(
                 "Access-Control-Allow-Methods",
