@@ -26,7 +26,8 @@ public class EmailService {
         }
 
         // Generate OTP
-        String otp = OTPManager.generateOTP(email);
+        String otp = OTPManager.generateOTP();
+        OTPManager.saveOTP(email, otp);
 
         // Store user details temporarily
         OTPStore.userMap.put(
