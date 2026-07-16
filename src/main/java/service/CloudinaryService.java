@@ -7,13 +7,32 @@ public class CloudinaryService {
 
     private static final Cloudinary cloudinary =
             new Cloudinary(ObjectUtils.asMap(
-                    "cloud_name", "lasmlkpx",
-                    "api_key", "126181331228455",
-                    "api_secret", "gldzT0P88fi7pggbl84k4DHT_h8",
-                    "secure", true
+
+                    "cloud_name",
+                    System.getenv().getOrDefault(
+                            "CLOUDINARY_CLOUD_NAME",
+                            "lasmlkpx"
+                    ),
+
+                    "api_key",
+                    System.getenv().getOrDefault(
+                            "CLOUDINARY_API_KEY",
+                            "YOUR_API_KEY"
+                    ),
+
+                    "api_secret",
+                    System.getenv().getOrDefault(
+                            "CLOUDINARY_API_SECRET",
+                            "YOUR_API_SECRET"
+                    ),
+
+                    "secure",
+                    true
+
             ));
 
     public static Cloudinary getCloudinary() {
         return cloudinary;
     }
+
 }
