@@ -13,7 +13,7 @@ public class DBConnection {
 
     private static final String USER =
             System.getenv().getOrDefault(
-                    "DB_USER",
+                    "DB_USERNAME",
                     "root"
             );
 
@@ -39,8 +39,7 @@ public class DBConnection {
 
             System.out.println("Database Connected");
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
 
             e.printStackTrace();
 
