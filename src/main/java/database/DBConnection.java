@@ -6,11 +6,22 @@ import java.sql.DriverManager;
 public class DBConnection {
 
     private static final String URL =
-            "jdbc:mysql://localhost:3306/insurance_claim_db";
+            System.getenv().getOrDefault(
+                    "DB_URL",
+                    "jdbc:mysql://localhost:3306/insurance_claim_db"
+            );
 
-    private static final String USER = "root";
+    private static final String USER =
+            System.getenv().getOrDefault(
+                    "DB_USER",
+                    "root"
+            );
 
-    private static final String PASSWORD = "admin";
+    private static final String PASSWORD =
+            System.getenv().getOrDefault(
+                    "DB_PASSWORD",
+                    "admin"
+            );
 
     public static Connection getConnection() {
 
@@ -28,10 +39,15 @@ public class DBConnection {
 
             System.out.println("Database Connected");
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
+
             e.printStackTrace();
+
         }
 
         return con;
+
     }
+
 }
