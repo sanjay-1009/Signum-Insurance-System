@@ -45,11 +45,16 @@ public class ClaimApprovalServlet
         String status =
                 request.getParameter(
                         "status");
+        
+        String adminRemark =
+                request.getParameter(
+                        "adminRemark");
 
         boolean result =
                 controller.updateClaimStatus(
                         claimId,
-                        status
+                        status,
+                        adminRemark
                 );
 
         response.setContentType(

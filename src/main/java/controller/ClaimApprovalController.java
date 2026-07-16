@@ -9,11 +9,11 @@ public class ClaimApprovalController {
 
     public boolean updateClaimStatus(
             int claimId,
-            String status) {
+            String status,String adminRemark) {
 
         return dao.updateStatus(
                 claimId,
-                status
+                status,adminRemark
         );
     }
 }

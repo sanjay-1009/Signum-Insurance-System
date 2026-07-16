@@ -1,6 +1,7 @@
 package servlet;
 
 import controller.LoginController;
+import utils.JWTUtil;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -8,67 +9,60 @@ import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-import utils.JWTUtil;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    LoginController controller =
-            new LoginController();
+    LoginController controller = new LoginController();
 
+    @Override
     protected void doPost(
             HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
-    	
-    	response.setHeader(
-    		    "Access-Control-Allow-Origin",
-    		    "*");
 
-        String username =
-                request.getParameter("username");
+        response.setHeader(
+                "Access-Control-Allow-Origin",
+                "http://localhost:3000");
 
-        String password =
-                request.getParameter("password");
+        response.setHeader(
+                "Access-Control-Allow-Credentials",
+                "true");
 
-        String role =
-        	    controller.login(
-        	        username,
-        	        password);
+        response.setContentType("application/json");
 
-        response.setContentType(
-                "application/json");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
 
-        PrintWriter out =
-                response.getWriter();
+        String role = controller.login(username, password);
 
-        if(role != null) {
+        PrintWriter out = response.getWriter();
 
-        	String token =
-        	        JWTUtil.generateToken(
-        	                username,
-        	                role);
+        if (role != null) {
 
-        	int userId =
-        	        controller.getUserId(
-        	                username);
+            int userId = controller.getUserId(username);
 
-        	out.print(
-        	        "{"
-        	        + "\"status\":\"SUCCESS\","
-        	        + "\"role\":\"" + role + "\","
-        	        + "\"userId\":" + userId + ","
-        	        + "\"token\":\"" + token + "\""
-        	        + "}"
-        	);
+            String token = JWTUtil.generateToken(
+                    username,
+                    role);
+
+            out.print(
+                    "{"
+                    + "\"status\":\"SUCCESS\","
+                    + "\"token\":\"" + token + "\","
+                    + "\"role\":\"" + role + "\","
+                    + "\"userId\":" + userId
+                    + "}"
+            );
 
         } else {
 
             out.print(
-                "{"
-                + "\"status\":\"FAILED\""
-                + "}"
+                    "{\"status\":\"FAILED\"}"
             );
-        }}}
+
+        }
+    }
+}

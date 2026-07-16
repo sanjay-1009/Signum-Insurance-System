@@ -51,19 +51,28 @@ public class JWTFilter implements Filter {
         }
 
         // Public URLs
-        if(path.contains("/login")
-                || path.contains("/register")) {
+     // Public URLs
+        
+        if (path.contains("/login")
+        		
+                || path.contains("/register")
+                || path.contains("/verifyRegisterOTP")
+                || path.contains("/sendOTP")
+                || path.contains("/verifyOTP"))
+             
+        {
 
-            chain.doFilter(
-                    request,
-                    response);
-
+            chain.doFilter(request, response);
             return;
         }
-
         String authHeader =
                 req.getHeader(
                         "Authorization");
+        
+        System.out.println("========== JWT FILTER ==========");
+        System.out.println("URL = " + req.getRequestURI());
+        System.out.println("Method = " + req.getMethod());
+        System.out.println("Authorization = " + authHeader);
 
         if(authHeader == null
                 || !authHeader.startsWith(
@@ -101,6 +110,8 @@ public class JWTFilter implements Filter {
                     response);
 
         } catch(Exception e) {
+        	
+        	e.printStackTrace();
 
             res.setStatus(
                     HttpServletResponse.SC_UNAUTHORIZED);

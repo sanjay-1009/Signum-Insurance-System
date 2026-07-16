@@ -1,223 +1,381 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import API from "../services/api";
+import Layout from "../components/layout/Layout";
 
 function Claim() {
 
+    const navigate = useNavigate();
 
-const [policyId, setPolicyId] = useState("");
-const [claimantName, setClaimantName] = useState("");
-const [claimAmount, setClaimAmount] = useState("");
-const [incidentDate, setIncidentDate] = useState("");
-const [description, setDescription] = useState("");
+    const location = useLocation();
 
-const submitClaim = async () => {
+    const passedPolicy = location.state || {};
 
-    if (Number(policyId) <= 0) {
+    const userId = localStorage.getItem("userId");
 
-        alert("Policy ID must be positive");
-        return;
-    }
+    const [policyId] = useState(
+        passedPolicy.policyId || ""
+    );
 
-    if (claimantName.trim() === "") {
+    const [claimantName] = useState(
+        passedPolicy.claimantName || ""
+    );
 
-        alert("Enter Claimant Name");
-        return;
-    }
+    const [claimAmount, setClaimAmount] =
+        useState("");
 
-    if (Number(claimAmount) <= 0) {
+    const [incidentDate, setIncidentDate] =
+        useState("");
 
-        alert("Claim Amount must be greater than 0");
-        return;
-    }
+    const [description, setDescription] =
+        useState("");
 
-    if (incidentDate === "") {
+    const [requiredDocuments, setRequiredDocuments] = useState([]);
 
-        alert("Select Incident Date");
-        return;
-    }
+    const [uploadedFiles, setUploadedFiles] = useState({});
 
-    if (description.trim() === "") {
+    const loadPolicy = async (policyId) => {
+        
 
-        alert("Enter Description");
-        return;
-    }
+    const token = localStorage.getItem("token");
 
-    try {
+    const response = await API.get(
+        "/policy?id=" + policyId,
+        {
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        }
+        
+    );
 
-        const formData =
-            new URLSearchParams();
+    setRequiredDocuments(
 
-        formData.append(
-            "policyId",
-            policyId);
+    response.data.requiredDocuments
+        ? response.data.requiredDocuments.split(",")
+        : []
 
-        formData.append(
-    "userId",
-    localStorage.getItem("userId")
 );
 
-        formData.append(
-            "claimantName",
-            claimantName);
 
-        formData.append(
-            "claimAmount",
-            claimAmount);
+};
+useEffect(() => {
 
-        formData.append(
-            "incidentDate",
-            incidentDate);
+    if (policyId) {
+        loadPolicy(policyId);
+    }
 
-        formData.append(
-            "description",
-            description);
+}, [policyId]);
+    
+    const submitClaim = async () => {
 
-        const response =
-            await API.post(
-                "/submitClaim",
-                formData
-            );
-
-        alert(response.data);
-
-        if (
-            response.data.includes(
-                "Successfully"
-            )
-        ) {
-
-            setPolicyId("");
-            setClaimantName("");
-            setClaimAmount("");
-            setIncidentDate("");
-            setDescription("");
+        if (!policyId) {
+            alert("Please select a policy first.");
+            navigate("/policies");
+            return;
         }
 
-    } catch(error) {
+        if (claimAmount === "") {
+            alert("Enter Claim Amount");
+            return;
+        }
 
-        console.log(error);
+        if (Number(claimAmount) <= 0) {
+            alert("Claim Amount must be greater than zero");
+            return;
+        }
 
-        alert(
-            "Failed to Submit Claim"
-        );
-    }
-};
+        if (incidentDate === "") {
+            alert("Select Incident Date");
+            return;
+        }
 
-return (
+        if (description.trim() === "") {
+            alert("Enter Incident Description");
+            return;
+        }
 
-    <div className="container mt-5">
+        try {
 
-        <div className="row justify-content-center">
+            const formData = new FormData();
 
-            <div className="col-md-6">
+            formData.append(
+                "policyId",
+                policyId
+            );
 
-                <div className="card shadow">
+            formData.append(
+                "userId",
+                userId
+            );
 
-                    <div className="card-header bg-success text-white">
+            formData.append(
+                "claimantName",
+                claimantName
+            );
 
-                        <h3>
-                            Submit Claim
-                        </h3>
+            formData.append(
+                "claimAmount",
+                claimAmount
+            );
+
+            formData.append(
+                "incidentDate",
+                incidentDate
+            );
+
+            formData.append(
+                "description",
+                description
+            );
+
+            Object.keys(uploadedFiles).forEach((doc) => {
+    formData.append("documents", uploadedFiles[doc]);
+    formData.append("documentNames", doc);
+});
+
+            const response = await API.post(
+    "/submitClaim",
+    formData
+);
+
+            alert(response.data);
+
+            if (
+                response.data.includes("Successfully")
+            ) {
+
+                navigate("/myclaims");
+
+            }
+
+        }
+        catch (error) {
+
+            console.log(error);
+
+            alert("Failed to Submit Claim");
+
+        }
+
+    };
+
+    return (
+
+        <Layout>
+
+            <div className="max-w-3xl mx-auto mt-10">
+
+                <div className="bg-white rounded-2xl shadow-xl p-8">
+
+                    <h1 className="text-3xl font-bold mb-8 text-slate-800">
+
+                        Submit Insurance Claim
+
+                    </h1>
+
+                    {/* Policy ID */}
+
+                    <div className="mb-5">
+
+                        <label className="block mb-2 font-semibold">
+
+                            Policy ID
+
+                        </label>
+
+                        <input
+
+                            className="w-full border rounded-lg p-3 bg-gray-100"
+
+                            value={policyId}
+
+                            readOnly
+
+                        />
 
                     </div>
 
-                    <div className="card-body">
+                    {/* Claimant */}
 
-                        <label className="form-label">
-                            Policy ID
-                        </label>
+                    <div className="mb-5">
 
-                        <input
-                            className="form-control mb-3"
-                            type="number"
-                            min="1"
-                            value={policyId}
-                            onChange={(e) =>
-                                setPolicyId(
-                                    e.target.value
-                                )
-                            }
-                        />
+                        <label className="block mb-2 font-semibold">
 
-                        <label className="form-label">
                             Claimant Name
+
                         </label>
 
                         <input
-                            className="form-control mb-3"
-                            type="text"
+
+                            className="w-full border rounded-lg p-3 bg-gray-100"
+
                             value={claimantName}
-                            onChange={(e) =>
-                                setClaimantName(
-                                    e.target.value
-                                )
-                            }
+
+                            readOnly
+
                         />
 
-                        <label className="form-label">
+                    </div>
+
+                    {/* Amount */}
+
+                    <div className="mb-5">
+
+                        <label className="block mb-2 font-semibold">
+
                             Claim Amount
+
                         </label>
 
                         <input
-                            className="form-control mb-3"
+
                             type="number"
-                            min="1"
+
+                            className="w-full border rounded-lg p-3"
+
+                            placeholder="Enter Claim Amount"
+
                             value={claimAmount}
+
                             onChange={(e) =>
                                 setClaimAmount(
                                     e.target.value
                                 )
                             }
+
                         />
 
-                        <label className="form-label">
+                    </div>
+
+                    {/* Date */}
+
+                    <div className="mb-5">
+
+                        <label className="block mb-2 font-semibold">
+
                             Incident Date
+
                         </label>
 
                         <input
-                            className="form-control mb-3"
+
                             type="date"
+
+                            className="w-full border rounded-lg p-3"
+
                             value={incidentDate}
+
                             onChange={(e) =>
                                 setIncidentDate(
                                     e.target.value
                                 )
                             }
+
                         />
 
-                        <label className="form-label">
-                            Description
+                    </div>
+
+                    <div className="bg-white p-6 rounded-xl shadow mt-4">
+
+<h2 className="text-xl font-bold mb-4">
+
+Required Documents
+
+</h2>
+
+{
+
+requiredDocuments.map((doc,index)=>(
+
+<div
+key={index}
+className="mb-4"
+>
+
+<label className="font-semibold">
+
+{doc}
+
+</label>
+
+<input
+
+type="file" 
+
+className="block mt-2"
+
+onChange={(e)=>{
+
+setUploadedFiles({
+
+...uploadedFiles,
+
+[doc]:e.target.files[0]
+
+})
+
+}}
+
+ />
+
+</div>
+
+))
+
+}
+
+</div>
+
+                    {/* Description */}
+
+                    <div className="mb-8">
+
+                        <label className="block mb-2 font-semibold">
+
+                            Incident Description
+
                         </label>
 
                         <textarea
-                            className="form-control mb-3"
-                            rows="4"
+
+                            rows="5"
+
+                            className="w-full border rounded-lg p-3"
+
+                            placeholder="Describe what happened..."
+
                             value={description}
+
                             onChange={(e) =>
                                 setDescription(
                                     e.target.value
                                 )
                             }
+
                         />
 
-                        <button
-                            className="btn btn-success w-100"
-                            onClick={submitClaim}
-                        >
-                            Submit Claim
-                        </button>
-
                     </div>
+
+                    <button
+
+                        onClick={submitClaim}
+
+                        className="w-full bg-green-600 hover:bg-green-700 text-white py-4 rounded-xl text-lg font-semibold transition"
+
+                    >
+
+                        Submit Claim
+
+                    </button>
 
                 </div>
 
             </div>
 
-        </div>
+        </Layout>
 
-    </div>
-);
-
+    );
 
 }
 

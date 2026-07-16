@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../services/api";
+import Navbar from "../components/home/Navbar";
 
 function Login() {
 
@@ -23,97 +24,136 @@ function Login() {
                 formData
             );
 
-            console.log("Server Response:", response.data);
+            console.log(response.data);
 
-           if (
-    response.data.status ===
-    "SUCCESS"
-) {
-  localStorage.setItem(
-    "userId",
-    response.data.userId
-);
+            if (response.data.status === "SUCCESS") {
 
-    localStorage.setItem(
-        "loggedIn",
-        "true"
-    );
+                localStorage.setItem(
+                    "userId",
+                    response.data.userId
+                );
 
-    localStorage.setItem(
-    "token",
-    response.data.token
-);
+                localStorage.setItem(
+                    "loggedIn",
+                    "true"
+                );
 
-    localStorage.setItem(
-        "role",
-        response.data.role
-    );
+                localStorage.setItem(
+                    "token",
+                    response.data.token
+                );
 
-    localStorage.setItem(
-        "username",
-        username
-    );
+                localStorage.setItem(
+                    "role",
+                    response.data.role
+                );
 
-    navigate("/dashboard");
+                localStorage.setItem(
+                    "username",
+                    username
+                );
 
-} else {
+                alert("Login Successful");
 
-    alert(
-        "Invalid Username or Password"
-    );
-}
+                navigate("/dashboard");
+
+            } else {
+
+                alert("Invalid Username or Password");
+
+            }
 
         } catch (error) {
 
             console.log(error);
-            alert("Login Error");
+
+            alert("Login Failed");
+
         }
+
     };
 
-   return (
+    return (
 
-<div className="container mt-5">
-  <div className="row justify-content-center">
+        <>
+            <Navbar />
 
-    <div className="col-md-4">
+            <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex items-center justify-center">
 
-      <div className="card p-4 shadow">
+                <div className="w-full max-w-md">
 
-        <h2 className="text-center mb-4">
-          Login
-        </h2>
+                    <div className="bg-white rounded-3xl shadow-2xl p-10">
 
-        <input
-          className="form-control mb-3"
-          type="text"
-          placeholder="Username"
-          onChange={(e) =>
-            setUsername(e.target.value)}
-        />
+                        <div className="text-center mb-8">
 
-        <input
-          className="form-control mb-3"
-          type="password"
-          placeholder="Password"
-          onChange={(e) =>
-            setPassword(e.target.value)}
-        />
+                            <div className="text-6xl mb-4">
+                                🛡️
+                            </div>
 
-        <button
-          className="btn btn-primary w-100"
-          onClick={login}
-        >
-          Login
-        </button>
+                            <h1 className="text-3xl font-bold text-slate-800">
+                                Insurance Claim System
+                            </h1>
 
-      </div>
+                            <p className="text-gray-500 mt-2">
+                                Login to your account
+                            </p>
 
-    </div>
+                        </div>
 
-  </div>
-</div>
+                        <div className="space-y-4">
 
-);
+                            <input
+                                className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                type="text"
+                                placeholder="Username"
+                                value={username}
+                                onChange={(e) =>
+                                    setUsername(e.target.value)
+                                }
+                            />
+
+                            <input
+                                className="w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                type="password"
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) =>
+                                    setPassword(e.target.value)
+                                }
+                            />
+
+                            <button
+                                className="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-3 rounded-xl transition"
+                                onClick={login}
+                            >
+                                Login
+                            </button>
+
+                        </div>
+
+                        <div className="mt-8 text-center text-sm text-gray-500">
+
+                            Don't have an account?
+
+                            <a
+                                href="/register"
+                                className="text-blue-700 font-semibold ml-2"
+                            >
+                                Register
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </>
+
+    );
+
 }
 
 export default Login;

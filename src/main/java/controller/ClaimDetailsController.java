@@ -36,5 +36,34 @@ public ResultSet getClaimById(
     return null;
 }
 
+public ResultSet getClaimDocuments(int claimId) {
+
+    try {
+
+        Connection con =
+                DBConnection.getConnection();
+
+        String query =
+                "SELECT * FROM claim_documents WHERE claim_id=?";
+
+        PreparedStatement ps =
+                con.prepareStatement(query);
+
+        ps.setInt(1, claimId);
+
+        return ps.executeQuery();
+
+    }
+
+    catch(Exception e) {
+
+        e.printStackTrace();
+
+    }
+
+    return null;
+
+}
+
 
 }

@@ -69,6 +69,11 @@ public class MyClaimsServlet
                         "status",
                         rs.getString(
                                 "status"));
+                
+                claim.put(
+                        "adminRemark",
+                        rs.getString(
+                                "admin_remark"));
 
                 claim.put(
                         "date",

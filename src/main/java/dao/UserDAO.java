@@ -84,4 +84,35 @@ public class UserDAO {
 
         return 0;
     }
+    public String getRole(String username) {
+
+        try {
+
+            Connection con =
+                    DBConnection.getConnection();
+
+            String query =
+                    "SELECT role FROM users WHERE username=?";
+
+            PreparedStatement ps =
+                    con.prepareStatement(query);
+
+            ps.setString(1, username);
+
+            ResultSet rs =
+                    ps.executeQuery();
+
+            if(rs.next()) {
+
+                return rs.getString("role");
+            }
+
+        } catch(Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    
 }

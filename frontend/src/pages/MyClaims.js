@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
+import Layout from "../components/layout/Layout";
 
 function MyClaims() {
+    
 
-    const [claims, setClaims] =
-        useState([]);
+    const [claims, setClaims] = useState([]);
+
+    const [filter, setFilter] = useState("ALL");
 
     useEffect(() => {
 
@@ -14,117 +17,268 @@ function MyClaims() {
 
     const loadClaims = async () => {
 
+        
+
         try {
 
             const userId =
-    localStorage.getItem(
-        "userId"
-    );
+                localStorage.getItem("userId");
 
-const response =
-    await API.get(
-        "/myClaims",
-        {
-            params: {
-                userId
-            }
-        }
-    );
+            const response =
+                await API.get(
+                    "/myClaims",
+                    {
+                        params: {
+                            userId
+                        }
+                    }
 
-            setClaims(
-                response.data
-            );
+                    
+                );
 
-        } catch(error) {
+            setClaims(response.data);
+
+        } catch (error) {
 
             console.log(error);
+
         }
+
     };
 
-    const getBadge = (status) => {
+    const badgeColor = (status) => {
 
-        if(status === "Approved")
-            return "success";
+    status = status.toUpperCase().trim();
 
-        if(status === "Rejected")
-            return "danger";
+    if (status === "APPROVED")
+        return "bg-green-100 text-green-700";
 
-        return "warning";
-    };
+    if (status === "REJECTED")
+        return "bg-red-100 text-red-700";
+
+    return "bg-yellow-100 text-yellow-700";
+
+};
+
+    const filteredClaims =
+    filter === "ALL"
+        ? claims
+        : claims.filter(
+              claim =>
+                  claim.status
+                      .toUpperCase()
+                      .trim() ===
+                  filter.toUpperCase()
+          );
+
+            
 
     return (
 
-        <div className="container mt-4">
+        <Layout>
 
-            <h2>
-                My Claims
-            </h2>
+            <div className="max-w-7xl mx-auto p-8">
 
-            <table className="table table-bordered">
+                <div className="flex justify-between items-center mb-8">
 
-                <thead>
+                    <div>
 
-                    <tr>
+                        <h1 className="text-3xl font-bold">
 
-                        <th>Claim ID</th>
-                        <th>Policy ID</th>
-                        <th>Amount</th>
-                        <th>Date</th>
-                        <th>Status</th>
+                            My Claims
 
-                    </tr>
+                        </h1>
 
-                </thead>
+                        <p className="text-gray-500 mt-2">
 
-                <tbody>
+                            Track all your submitted insurance claims.
 
-                    {claims.map(
-                        (claim) => (
+                        </p>
 
-                        <tr
-                            key={
-                                claim.claimId
-                            }
-                        >
+                    </div>
 
-                            <td>
-                                {claim.claimId}
-                            </td>
+                    <select
 
-                            <td>
-                                {claim.policyId}
-                            </td>
+                        value={filter}
 
-                            <td>
-                                ₹{claim.amount}
-                            </td>
+                        onChange={(e) =>
+                            setFilter(
+                                e.target.value
+                            )
+                        }
 
-                            <td>
-                                {claim.date}
-                            </td>
+                        className="border rounded-xl p-3"
 
-                            <td>
+                    >
 
-                                <span
-                                    className={
-                                      `badge bg-${getBadge(claim.status)}`
-                                    }
-                                >
-                                    {claim.status}
-                                </span>
+                        <option value="ALL">
 
-                            </td>
+                            All Claims
 
-                        </tr>
+                        </option>
 
-                    ))}
+                        <option value="Pending">
 
-                </tbody>
+                            Pending
 
-            </table>
+                        </option>
+
+                        <option value="Approved">
+
+                            Approved
+
+                        </option>
+
+                        <option value="Rejected">
+
+                            Rejected
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+                {
+
+                    filteredClaims.length === 0 &&
+
+                    <div className="bg-white rounded-xl shadow p-8 text-center text-gray-500">
+
+                        No Claims Found
+
+                    </div>
+
+                }
+
+                <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+                    {
+
+                        filteredClaims.map((claim) => (
+
+                            <div
+
+                                key={claim.claimId}
+
+                                className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl transition"
+
+                            >
+
+<div className="flex justify-between items-center">
+
+    <h2 className="text-xl font-bold">
+        Claim #{claim.claimId}
+    </h2>
+
+    <span
+        className={`px-3 py-1 rounded-full text-sm font-semibold ${badgeColor(claim.status)}`}
+    >
+        {claim.status}
+    </span>
+
+</div>
+
+                                <hr className="my-5" />
+
+                                {
+    claim.adminRemark && (
+
+        <div
+            className={`mb-5 rounded-xl p-4 ${
+                claim.status === "Rejected"
+                    ? "bg-red-50 border border-red-300"
+                    : "bg-blue-50 border border-blue-300"
+            }`}
+        >
+
+            <h3 className="font-semibold mb-2">
+
+                {
+                    claim.status === "Rejected"
+                        ? "Rejection Reason"
+                        : "Admin Remarks"
+                }
+
+            </h3>
+
+            <p>
+
+                {claim.adminRemark}
+
+            </p>
 
         </div>
+
+    )
+}
+
+                                <div className="space-y-4">
+
+                                    <div>
+
+                                        <p className="text-gray-500">
+
+                                            Policy ID
+
+                                        </p>
+
+                                        <h3 className="font-semibold">
+
+                                            {claim.policyId}
+
+                                        </h3>
+
+                                    </div>
+
+                                    <div>
+
+                                        <p className="text-gray-500">
+
+                                            Claim Amount
+
+                                        </p>
+
+                                        <h3 className="text-blue-600 text-xl font-bold">
+
+                                            ₹ {claim.amount}
+
+                                        </h3>
+
+                                    </div>
+
+                                    <div>
+
+                                        <p className="text-gray-500">
+
+                                            Submitted Date
+
+                                        </p>
+
+                                        <h3>
+
+                                            {claim.date}
+
+                                        </h3>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        ))
+
+                    }
+
+                </div>
+
+            </div>
+
+        </Layout>
+
     );
+
 }
 
 export default MyClaims;

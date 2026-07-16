@@ -11,9 +11,13 @@ import Policy from "./pages/Policy";
 import Claim from "./pages/Claim";
 import Approval from "./pages/Approval";
 import Reports from "./pages/Reports";
-import Navbar from "./components/Navbar";
 import Policies from "./pages/Policies";
 import MyClaims from "./pages/MyClaims";
+import Home from "./pages/Home";
+import Register from "./pages/Register";
+import BuyPolicy from "./pages/BuyPolicy";
+
+
 
 function AppContent() {
 
@@ -24,17 +28,18 @@ function AppContent() {
 
   return (
     <>
-      {loggedIn &&
-        location.pathname !== "/" &&
-        <Navbar />
-      }
+      
 
       <Routes>
 
+        <Route path="/" element={<Home />} />
+
         <Route
-          path="/"
+          path="/login"
           element={<Login />}
         />
+
+        <Route path="/register" element={<Register />} />
 
         <Route
           path="/dashboard"
@@ -62,13 +67,17 @@ function AppContent() {
         />
 
         <Route
-    path="/policies"
-    element={<Policies />}
-/>
+          path="/policies"
+          element={<Policies />}
+        />
 
-<Route
-    path="/myclaims"
-    element={<MyClaims />}
+        <Route
+          path="/myclaims"
+          element={<MyClaims />}
+        />
+        <Route
+    path="/buy-policy"
+    element={<BuyPolicy />}
 />
 
       </Routes>
@@ -77,7 +86,6 @@ function AppContent() {
 }
 
 function App() {
-
   return (
     <BrowserRouter>
       <AppContent />

@@ -30,8 +30,8 @@ protected void doGet(
             "Access-Control-Allow-Origin",
             "http://localhost:3000");
 
-    response.setContentType(
-            "application/json");
+    response.setContentType("application/json");
+    response.setCharacterEncoding("UTF-8");
 
     PrintWriter out =
             response.getWriter();
@@ -92,12 +92,21 @@ protected void doGet(
                                     "incident_date"))
                     .append("\",");
 
-            json.append(
-                    "\"description\":\"")
-                    .append(
-                            rs.getString(
-                                    "description"))
-                    .append("\",");
+            String description = rs.getString("description");
+
+            if (description == null) {
+                description = "";
+            }
+
+            description = description
+                    .replace("\\", "\\\\")
+                    .replace("\"", "\\\"")
+                    .replace("\n", "\\n")
+                    .replace("\r", "");
+
+            json.append("\"description\":\"")
+                .append(description)
+                .append("\",");
 
             json.append(
                     "\"status\":\"")
@@ -112,6 +121,8 @@ protected void doGet(
         }
 
         json.append("]");
+        
+        out.flush();
 
         out.print(
                 json.toString());

@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
+import { useNavigate } from "react-router-dom";
+import Layout from "../components/layout/Layout";
 
 function Policies() {
 
-    const [policies, setPolicies] =
-        useState([]);
+    const navigate = useNavigate();
+
+    const [policies, setPolicies] = useState([]);
 
     useEffect(() => {
 
@@ -16,90 +19,180 @@ function Policies() {
 
         try {
 
-            const response =
-                await API.get(
-                    "/getPolicies"
-                );
+            const userId = localStorage.getItem("userId");
 
-            setPolicies(
-                response.data
+            const response = await API.get(
+                "/myPolicy?userId=" + userId
             );
 
-        } catch(error) {
+            
+
+            setPolicies(response.data);
+
+        } catch (error) {
 
             console.log(error);
+
         }
+
     };
 
     return (
 
-        <div className="container mt-4">
+        <Layout>
 
-            <h2 className="mb-4">
-                Available Policies
-            </h2>
+            <div className="max-w-7xl mx-auto p-8">
 
-            <table className="table table-bordered table-striped">
+                <div className="flex justify-between items-center mb-8">
 
-                <thead>
+                    <h1 className="text-3xl font-bold text-slate-800">
 
-                    <tr>
+                        My Policies
 
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Coverage</th>
-                        <th>Premium</th>
+                    </h1>
 
-                    </tr>
+                </div>
 
-                </thead>
+                <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
 
-                <tbody>
+                    {
 
-                    {policies.map(
-                        (policy) => (
+                        policies.map((policy, index) => (
 
-                        <tr
-                            key={
-                                policy.policyId
-                            }
-                        >
+                            <div
+                                key={index}
+                                className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition p-6"
+                            >
 
-                            <td>
-                                {policy.policyId}
-                            </td>
+                                <div className="flex justify-between items-center">
 
-                            <td>
-                                {policy.policyName}
-                            </td>
+                                    <h2 className="text-xl font-bold text-slate-800">
 
-                            <td>
-                                {policy.policyType}
-                            </td>
+                                        {policy.policyName}
 
-                            <td>
-                                ₹{
-                                  policy.coverageAmount
-                                }
-                            </td>
+                                    </h2>
 
-                            <td>
-                                ₹{
-                                  policy.premiumAmount
-                                }
-                            </td>
+                                    <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold">
 
-                        </tr>
+                                        {policy.policyType}
 
-                    ))}
+                                    </span>
 
-                </tbody>
+                                </div>
 
-            </table>
+                                <div className="mt-6 space-y-4">
 
-        </div>
+                                    <div>
+
+                                        <p className="text-gray-500">
+
+                                            Premium Paid
+
+                                        </p>
+
+                                        <p className="text-lg font-bold text-blue-600">
+
+                                            ₹ {policy.premiumPaid}
+
+                                        </p>
+
+                                    </div>
+
+                                    <div>
+
+                                        <p className="text-gray-500">
+
+                                            Maturity Amount
+
+                                        </p>
+
+                                        <p className="text-lg font-bold text-green-600">
+
+                                            ₹ {policy.maturityAmount}
+
+                                        </p>
+
+                                    </div>
+
+                                    <div>
+
+                                        <p className="text-gray-500">
+
+                                            Start Date
+
+                                        </p>
+
+                                        <p className="font-semibold">
+
+                                            {policy.startDate}
+
+                                        </p>
+
+                                    </div>
+
+                                    <div>
+
+                                        <p className="text-gray-500">
+
+                                            End Date
+
+                                        </p>
+
+                                        <p className="font-semibold">
+
+                                            {policy.endDate}
+
+                                        </p>
+
+                                    </div>
+
+                                    <div>
+
+                                        <p className="text-gray-500">
+
+                                            Days Left
+
+                                        </p>
+
+                                        <p className="text-xl font-bold text-orange-500">
+
+                                            {policy.daysLeft} Days
+
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                <button
+                                    className="mt-6 w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-semibold transition"
+                                    onClick={() =>
+                                        navigate("/claim", {
+                                            state: {
+                                                policyId: policy.policyId,
+                                                policyName: policy.policyName,
+                                                claimantName: localStorage.getItem("username")
+                                            }
+                                        })
+                                    }
+                                >
+                                    Submit Claim
+                                </button>
+
+                            </div>
+
+                        ))
+
+                    }
+
+                </div>
+
+            </div>
+
+        </Layout>
+
     );
+
 }
 
 export default Policies;
