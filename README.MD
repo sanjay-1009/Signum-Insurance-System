@@ -153,7 +153,7 @@ Signum
 ### Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/sanjay-1009/Signum-Insurance-System
 ```
 
 ### Frontend
