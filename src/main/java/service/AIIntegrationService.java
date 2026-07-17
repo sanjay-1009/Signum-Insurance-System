@@ -9,7 +9,7 @@ import java.net.URL;
 public class AIIntegrationService {
 
     private static final String AI_URL =
-            "http://localhost:8081/ai/analyze-policy";
+            "https://signum-ai-service.onrender.com/ai/analyze-policy";
 
     public String analyzePolicy(String policyText) {
 
