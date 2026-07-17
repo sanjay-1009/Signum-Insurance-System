@@ -264,7 +264,7 @@ Keep the response professional and easy to understand.
 
             URL url =
                     new URL(
-                            "https://signum-ai-service.onrender.com/ai/chat");
+                            "https://signum-ai-service.onrender.com/ai/advisor");
 
             HttpURLConnection connection =
                     (HttpURLConnection)
