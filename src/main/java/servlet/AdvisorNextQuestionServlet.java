@@ -33,7 +33,7 @@ public class AdvisorNextQuestionServlet extends HttpServlet {
 
         response.setHeader(
                 "Access-Control-Allow-Origin",
-                "http://localhost:3000");
+                "https://insurance-frontend-woad.vercel.app");
 
         response.setContentType(
                 "application/json");
