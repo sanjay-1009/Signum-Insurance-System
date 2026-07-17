@@ -53,7 +53,7 @@ public class ClaimServlet extends HttpServlet {
     	
     	response.setHeader(
     		    "Access-Control-Allow-Origin",
-    		    "http://localhost:3000"
+    		    "https://insurance-frontend-woad.vercel.app"
     		);
 
     		response.setHeader(
@@ -180,7 +180,7 @@ public class ClaimServlet extends HttpServlet {
 
         response.setHeader(
                 "Access-Control-Allow-Origin",
-                "http://localhost:3000");
+                "https://insurance-frontend-woad.vercel.app");
 
         response.setContentType("application/json");
 
@@ -271,7 +271,7 @@ public class ClaimServlet extends HttpServlet {
 
         response.setHeader(
             "Access-Control-Allow-Origin",
-            "http://localhost:3000"
+            "https://insurance-frontend-woad.vercel.app"
         );
 
         response.setHeader(

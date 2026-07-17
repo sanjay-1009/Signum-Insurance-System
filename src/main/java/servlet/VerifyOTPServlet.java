@@ -20,7 +20,7 @@ public class VerifyOTPServlet
 
         response.setHeader(
                 "Access-Control-Allow-Origin",
-                "http://localhost:3000");
+                "https://insurance-frontend-woad.vercel.app");
 
         String username =
                 request.getParameter(

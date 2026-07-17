@@ -28,7 +28,7 @@ protected void doGet(
 
     response.setHeader(
             "Access-Control-Allow-Origin",
-            "http://localhost:3000");
+            "https://insurance-frontend-woad.vercel.app");
 
     response.setContentType("application/json");
     response.setCharacterEncoding("UTF-8");
@@ -142,7 +142,7 @@ protected void doOptions(
 
     response.setHeader(
             "Access-Control-Allow-Origin",
-            "http://localhost:3000");
+            "https://insurance-frontend-woad.vercel.app");
 
     response.setHeader(
             "Access-Control-Allow-Methods",

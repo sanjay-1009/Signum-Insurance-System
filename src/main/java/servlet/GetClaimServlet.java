@@ -29,7 +29,7 @@ protected void doGet(
 
     response.setHeader(
             "Access-Control-Allow-Origin",
-            "http://localhost:3000");
+            "https://insurance-frontend-woad.vercel.app");
 
     int claimId =
             Integer.parseInt(
@@ -111,7 +111,7 @@ protected void doOptions(
 
     response.setHeader(
             "Access-Control-Allow-Origin",
-            "http://localhost:3000");
+            "https://insurance-frontend-woad.vercel.app");
 
     response.setHeader(
             "Access-Control-Allow-Methods",

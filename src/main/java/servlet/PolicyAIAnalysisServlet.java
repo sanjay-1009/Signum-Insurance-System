@@ -35,7 +35,7 @@ public class PolicyAIAnalysisServlet extends HttpServlet {
 
         response.setHeader(
                 "Access-Control-Allow-Origin",
-                "http://localhost:3000");
+                "https://insurance-frontend-woad.vercel.app");
 
         response.setHeader(
                 "Access-Control-Allow-Methods",
@@ -56,7 +56,7 @@ public class PolicyAIAnalysisServlet extends HttpServlet {
 
         response.setHeader(
                 "Access-Control-Allow-Origin",
-                "http://localhost:3000");
+                "https://insurance-frontend-woad.vercel.app");
 
         response.setContentType(
                 "application/json");

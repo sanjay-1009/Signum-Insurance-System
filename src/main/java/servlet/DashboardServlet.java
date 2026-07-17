@@ -27,7 +27,7 @@ public class DashboardServlet extends HttpServlet {
 
         response.setHeader(
                 "Access-Control-Allow-Origin",
-                "http://localhost:3000");
+                "https://insurance-frontend-woad.vercel.app");
 
         HashMap<String,Integer> stats =
                 controller.getDashboardData();
@@ -70,7 +70,7 @@ public class DashboardServlet extends HttpServlet {
 
         response.setHeader(
                 "Access-Control-Allow-Origin",
-                "http://localhost:3000");
+                "https://insurance-frontend-woad.vercel.app");
 
         response.setHeader(
                 "Access-Control-Allow-Methods",
